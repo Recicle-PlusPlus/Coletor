@@ -86,7 +86,7 @@ export function Home({}) {
   async function getColectorStatistics() {
     const typesWeight = {};
     collectorData.forEach(item => {
-      const typesArray = item.types.split(',').map(type => type.trim());
+      const typesArray = (item.types || "").split(',').map(type => type.trim());
       const weight = parseInt(item.weight.match(/\d+/)[0], 10); // Extrai apenas o número da string "5 KG" e converte para inteiro
 
       typesArray.forEach(type => {
@@ -111,12 +111,12 @@ export function Home({}) {
     return statistic;
   }
 
-  const quantidadeTypesA = collectorData.filter((tarefa) => tarefa.types.includes('Plástico')).length;
-  const quantidadeTypesB = collectorData.filter((tarefa) => tarefa.types.includes('Metal')).length;
-  const quantidadeTypesC = collectorData.filter((tarefa) => tarefa.types.includes('Eletrônico')).length;
-  const quantidadeTypesD = collectorData.filter((tarefa) => tarefa.types.includes('Papel')).length;
-  const quantidadeTypesE = collectorData.filter((tarefa) => tarefa.types.includes('Óleo')).length;
-  const quantidadeTypesF = collectorData.filter((tarefa) => tarefa.types.includes('Vidro')).length;
+  const quantidadeTypesA = collectorData.filter((tarefa) => tarefa.types?.includes('Plástico')).length;
+  const quantidadeTypesB = collectorData.filter((tarefa) => tarefa.types?.includes('Metal')).length;
+  const quantidadeTypesC = collectorData.filter((tarefa) => tarefa.types?.includes('Eletrônico')).length;
+  const quantidadeTypesD = collectorData.filter((tarefa) => tarefa.types?.includes('Papel')).length;
+  const quantidadeTypesE = collectorData.filter((tarefa) => tarefa.types?.includes('Óleo')).length;
+  const quantidadeTypesF = collectorData.filter((tarefa) => tarefa.types?.includes('Vidro')).length;
   const allTypesAreZero = [quantidadeTypesA, quantidadeTypesB, quantidadeTypesC, quantidadeTypesD, quantidadeTypesE, quantidadeTypesF].every(
     (quantity) => quantity === 0
   );
@@ -129,7 +129,7 @@ export function Home({}) {
     quantidadeTypesD,
     quantidadeTypesE,
     quantidadeTypesF
-  );
+  ) || 1;
 
   // Normalizando os valores para calcular as alturas das barras
   const normalizedA = (quantidadeTypesA / max) * 100;
@@ -260,7 +260,7 @@ export function Home({}) {
         {collectorData.map((index, key) => (
           <View style={[styles.containerEdit, { marginRight: 50 }]} key={key} >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <CardHome tipo={index.type} endereco={index.address.name} peso={index.weight} sacolas={index.bags} caixas={index.boxes} foto={index.donor.photoUrl} nome={index.donor.name} id={index.donor.id} key={index} />
+              <CardHome tipo={index.types} endereco={index.address.name} peso={index.weight} sacolas={index.bags} caixas={index.boxes} foto={index.donor.photoUrl} nome={index.donor.name} id={index.donor.id} key={index} />
             </View>
           </View>
         ))}
